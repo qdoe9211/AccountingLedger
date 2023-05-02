@@ -2,6 +2,7 @@ package org.yearup;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -49,6 +50,7 @@ public class AccountingLedgerApp {
             System.out.println(" P - Make A Payment");
             System.out.println(" L - View Ledger");
             System.out.println(" X - Exit");
+            System.out.println("Enter your option: ");
             char option = scanner.next().charAt(0);
             scanner.nextLine();
 
@@ -77,16 +79,56 @@ public class AccountingLedgerApp {
         }
     }
 
-    public static void addADeposit() {
+    public static void addADeposit() throws Exception {
 
+        System.out.println("Enter the date of the deposit (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(scanner.nextLine(), dateFormatter);
+        System.out.println("Enter the time of the deposit (HH:mm:ss): ");
+        LocalTime time = LocalTime.parse(scanner.nextLine(), timeFormatter);
+        System.out.println("Enter a description for the deposit: ");
+        String description = scanner.nextLine();
+        System.out.println("Enter the name of the vendor: ");
+        String vendor = scanner.nextLine();
+        System.out.println("Enter the amount of the deposit: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
 
+        Transactions deposit = new Transactions(date, time, description, vendor, amount);
+        accountLedger.add(deposit);
+
+        FileWriter writer = new FileWriter("transactions.csv", true);
+        writer.write("\n" + deposit.getDate().format(dateFormatter) + "|" + deposit.getTime().format(timeFormatter) + "|" + deposit.getDescription() + "|" + deposit.getVendor() + "|" + deposit.getAmount());
+        writer.close();
+
+        System.out.println("Your deposit has been added.");
     }
 
-    public static void makeAPayment() {
+    public static void makeAPayment() throws Exception {
 
+        System.out.println("Enter the date of the payment (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(scanner.nextLine(), dateFormatter);
+        System.out.println("Enter the time of the payment (HH:mm:ss): ");
+        LocalTime time = LocalTime.parse(scanner.nextLine(), timeFormatter);
+        System.out.println("Enter a description for the payment: ");
+        String description = scanner.nextLine();
+        System.out.println("Enter the name of the vendor: ");
+        String vendor = scanner.nextLine();
+        System.out.println("Enter the amount of the payment: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        Transactions debit = new Transactions(date, time, description, vendor, amount);
+        accountLedger.add(debit);
+
+        FileWriter writer = new FileWriter("transactions.csv", true);
+        writer.write("\n" + debit.getDate().format(dateFormatter) + "|" + debit.getTime().format(timeFormatter) + "|" + debit.getDescription() + "|" + debit.getVendor() + "|-" + debit.getAmount());
+        writer.close();
+
+        System.out.println("Your payment has been added.");
     }
 
     public static void viewLedger() {
+
 
     }
 
