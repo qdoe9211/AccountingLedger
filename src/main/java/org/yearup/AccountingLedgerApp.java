@@ -7,10 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class AccountingLedgerApp {
 
@@ -68,6 +65,7 @@ public class AccountingLedgerApp {
                 case 'x':
                     System.out.println("Have a great day!");
                     System.exit(0);
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
@@ -104,6 +102,8 @@ public class AccountingLedgerApp {
         Transactions deposit = new Transactions(date, time, description, vendor, amount);
         accountingLedger.add(deposit);
 
+        Collections.reverse(accountingLedger);
+
         FileWriter writer = new FileWriter("transactions.csv", true);
         writer.write("\n" + deposit.getDate().format(dateFormatter) + "|" + deposit.getTime().format(timeFormatter) + "|" + deposit.getDescription() + "|" + deposit.getVendor() + "|" + deposit.getAmount());
         writer.close();
@@ -127,6 +127,8 @@ public class AccountingLedgerApp {
 
         Transactions debit = new Transactions(date, time, description, vendor, amount);
         accountingLedger.add(debit);
+
+        Collections.reverse(accountingLedger);
 
         FileWriter writer = new FileWriter("transactions.csv", true);
         writer.write("\n" + debit.getDate().format(dateFormatter) + "|" + debit.getTime().format(timeFormatter) + "|" + debit.getDescription() + "|" + debit.getVendor() + "|-" + debit.getAmount());
@@ -361,5 +363,14 @@ public class AccountingLedgerApp {
         }
         System.out.printf("%-35s $%.2f%n", "Year To Date Total:", yearToDateTotal);
     }
-    public static void vendorReport() {}
+    public static void vendorReport() {
+        System.out.println("Enter the vendor name:");
+        String vendorName = scanner.nextLine().toLowerCase();
+        System.out.println("Entries for vendor " + vendorName + ":");
+        for (Transactions transaction : accountingLedger) {
+            if (transaction.getVendor().toLowerCase().equals(vendorName)) {
+                System.out.println(transaction.getDescription() + "|" + transaction.getVendor() + "|" + transaction.getAmount());
+            }
+        }
+    }
 }
