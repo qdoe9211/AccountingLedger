@@ -2,6 +2,8 @@ package org.yearup;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Transactions {
 
@@ -10,16 +12,19 @@ public class Transactions {
     private String description;
 
     private String vendor;
-    double amount;
+    private double amount;
+
 
     public Transactions(LocalDate date, LocalTime time, String description, String vendor, double amount) {
 
-        this. date = date;
+        this.date = date;
         this.time = time;
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
+
     }
+
 
     public LocalDate getDate() {
         return date;
@@ -59,5 +64,28 @@ public class Transactions {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+
+    private double monthToDateTotal;
+    private String key;
+    private Double value;
+
+    public Transactions(String key, Double value) {
+
+        this.key = key;
+        this.value = value;
+    }
+
+    public String getKey() { return key; }
+
+    public Double getValue() { return value; }
+
+    public void setMonthToDateTotal(double monthToDateTotal) {
+        this.monthToDateTotal = monthToDateTotal;
+    }
+
+    public double getMonthToDateTotal() {
+        return monthToDateTotal;
     }
 }

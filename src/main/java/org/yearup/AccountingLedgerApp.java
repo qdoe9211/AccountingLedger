@@ -5,9 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
@@ -206,29 +208,158 @@ public class AccountingLedgerApp {
 
         switch (command) {
             case 1:
-                System.out.println("Month To Date Report");
-                System.out.println("-----------------------------");
+                monthToDateReport();
                 break;
             case 2:
-                System.out.println("Previous Month Report");
+                previousMonthReport();
                 break;
             case 3:
-                System.out.println("Year To Date Report");
+                yearToDateReport();
                 break;
             case 4:
-                System.out.println("Previous Year Report");
+                previousYearReport();
+                break;
             case 5:
-                System.out.println("Vendor Report");
+                vendorReport();
             case 0:
                 displayHomeScreen();
                 break;
             default:
                 System.out.println("Invalid option. Please try again.");
                 break;
-
-
         }
 
-
     }
+
+    public static void monthToDateReport() {
+
+        System.out.println("Month To Date Report");
+        System.out.println("------------------------");
+        HashMap<String, Double> ledger = new HashMap<>();
+        double monthToDateTotal = 0.0;
+        Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        for (Transactions transactions : accountingLedger) {
+            if (transactions.getDate().getYear() == currentYear
+                    && transactions.getDate().getMonthValue() == currentMonth) {
+                String description = transactions.getDescription();
+                double amount = transactions.getAmount();
+                monthToDateTotal += amount;
+
+                if (ledger.containsKey(description)) {
+                    double currentAmount = ledger.get(description);
+                    ledger.put(description, currentAmount + amount);
+                } else {
+                    ledger.put(description, amount);
+                }
+            }
+        }
+
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+            String description = entry.getKey();
+            double amount = entry.getValue();
+            System.out.printf("%-30s $%.2f%n", description, amount);
+        }
+        System.out.printf("%-30s $%.2f%n", "Month To Date Total:", monthToDateTotal);
+    }
+
+    public static void previousMonthReport() {
+
+        System.out.println("Previous Month Report");
+        System.out.println("------------------------");
+        HashMap<String, Double> ledger = new HashMap<>();
+        double monthToDateTotal = 0.0;
+        Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        for (Transactions transactions : accountingLedger) {
+            if (transactions.getDate().getYear() == currentYear
+                    && transactions.getDate().getMonthValue() == currentMonth) {
+                String description = transactions.getDescription();
+                double amount = transactions.getAmount();
+                monthToDateTotal += amount;
+
+                if (ledger.containsKey(description)) {
+                    double currentAmount = ledger.get(description);
+                    ledger.put(description, currentAmount + amount);
+                } else {
+                    ledger.put(description, amount);
+                }
+            }
+        }
+
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+            String description = entry.getKey();
+            double amount = entry.getValue();
+            System.out.printf("%-30s $%.2f%n", description, amount);
+        }
+        System.out.printf("%-30s $%.2f%n", "Month To Date Total:", monthToDateTotal);
+    }
+    public static void yearToDateReport()
+    {
+        System.out.println("Year To Date Report");
+        System.out.println("-----------------------");
+        HashMap<String, Double> ledger = new HashMap<>();
+        double yearToDateTotal = 0.0;
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        for (Transactions transactions : accountingLedger) {
+            if (transactions.getDate().getYear() == currentYear) {
+                String description = transactions.getDescription();
+                double amount = transactions.getAmount();
+
+                yearToDateTotal += amount;
+
+                if (ledger.containsKey(description)) {
+                    double currentAmount = ledger.get(description);
+                    ledger.put(description, currentAmount + amount);
+                } else {
+                    ledger.put(description, amount);
+                }
+            }
+        }
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+            String description = entry.getKey();
+            double amount = entry.getValue();
+            System.out.printf("%-35s $%.2f%n", description, amount);
+        }
+        System.out.printf("%-35s $%.2f%n", "Year To Date Total:", yearToDateTotal);
+    }
+
+    public static void previousYearReport() {
+
+        System.out.println("Previous Year Report");
+        System.out.println("-----------------------");
+        HashMap<String, Double> ledger = new HashMap<>();
+        double yearToDateTotal = 0.0;
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR) - 1;
+
+        for (Transactions transactions : accountingLedger) {
+            if (transactions.getDate().getYear() == currentYear) {
+                String description = transactions.getDescription();
+                double amount = transactions.getAmount();
+
+                yearToDateTotal += amount;
+
+                if (ledger.containsKey(description)) {
+                    double currentAmount = ledger.get(description);
+                    ledger.put(description, currentAmount + amount);
+                } else {
+                    ledger.put(description, amount);
+                }
+            }
+        }
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+            String description = entry.getKey();
+            double amount = entry.getValue();
+            System.out.printf("%-35s $%.2f%n", description, amount);
+        }
+        System.out.printf("%-35s $%.2f%n", "Year To Date Total:", yearToDateTotal);
+    }
+    public static void vendorReport() {}
 }
