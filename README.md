@@ -75,7 +75,6 @@ Comparator Interface Visual
 
 ***Program Visuals***
 
-![Screenshot (526)](https://user-images.githubusercontent.com/130028689/236374226-087aa567-2deb-4050-ab1c-edc80bde417c.png)
 ![Screenshot (513)](https://user-images.githubusercontent.com/130028689/236374243-873c824f-b648-43e9-b340-3a793c6ec8f1.png)
 ![Screenshot (514)](https://user-images.githubusercontent.com/130028689/236374262-7fba0fdc-f4ee-408b-83bc-ec8d1512e237.png)
 ![Screenshot (515)](https://user-images.githubusercontent.com/130028689/236374269-81fb0fc7-f7bf-4e44-ad77-53b240fd0126.png)
