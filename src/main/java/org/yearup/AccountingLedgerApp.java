@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -16,16 +15,18 @@ public class AccountingLedgerApp {
     static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     static Scanner scanner = new Scanner(System.in);
 
-    public static void run() throws Exception {
-
+    public static void run() throws Exception
+    {
         FileReader fileReader = new FileReader("transactions.csv");
         BufferedReader reader = new BufferedReader(fileReader);
 
         reader.readLine();
 
         String line = reader.readLine();
-        while (line != null) {
-            if (line.isEmpty()) {
+        while (line != null)
+        {
+            if (line.isEmpty())
+            {
                 line = reader.readLine();
                 continue;
             }
@@ -44,11 +45,12 @@ public class AccountingLedgerApp {
         }
         reader.close();
 
-        while (true) {
-
+        while (true)
+        {
             char option = displayHomeScreen();
 
-            switch (option) {
+            switch (option)
+            {
                 case 'D':
                 case 'd':
                     addADeposit();
@@ -63,17 +65,22 @@ public class AccountingLedgerApp {
                     break;
                 case 'X':
                 case 'x':
-                    System.out.println("Have a great day!");
+                    System.out.println();
+                    System.out.println(ColorCodes.ORANGE + "Have a great day!" + ColorCodes.RESET);
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println(ColorCodes.RED + "Invalid option. Please try again." + ColorCodes.RESET);
                     break;
             }
         }
     }
 
-    public static char displayHomeScreen() {
+    public static char displayHomeScreen()
+    {
+        System.out.println();
+        System.out.println(ColorCodes.YELLOW + ColorCodes.BLACK_BACKGROUND + "HOME SCREEN" + ColorCodes.RESET);
+        System.out.println(ColorCodes.YELLOW + "---------------------" + ColorCodes.RESET);
         System.out.println("What would you like to do?");
         System.out.println(" D - Add A Deposit");
         System.out.println(" P - Make A Payment");
@@ -85,8 +92,11 @@ public class AccountingLedgerApp {
     }
 
 
-    public static void addADeposit() throws Exception {
-
+    public static void addADeposit() throws Exception
+    {
+        System.out.println();
+        System.out.println(ColorCodes.RED + ColorCodes.BLACK_BACKGROUND + "ADD A DEPOSIT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.RED + "---------------------" + ColorCodes.RESET);
         System.out.println("Enter the date of the deposit (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), dateFormatter);
         System.out.println("Enter the time of the deposit (HH:mm:ss): ");
@@ -108,11 +118,16 @@ public class AccountingLedgerApp {
         writer.write("\n" + deposit.getDate().format(dateFormatter) + "|" + deposit.getTime().format(timeFormatter) + "|" + deposit.getDescription() + "|" + deposit.getVendor() + "|" + deposit.getAmount());
         writer.close();
 
-        System.out.println("Your deposit has been added.");
+        System.out.println();
+        System.out.println(ColorCodes.GREEN + "Your deposit has been added." + " " + deposit.getDate().format(dateFormatter) + "|" + deposit.getTime().format(timeFormatter) + "|" + deposit.getDescription() + "|" + deposit.getVendor() + "|" + deposit.getAmount() + ColorCodes.RESET);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
     }
 
-    public static void makeAPayment() throws Exception {
-
+    public static void makeAPayment() throws Exception
+    {
+        System.out.println();
+        System.out.println(ColorCodes.RED + ColorCodes.BLACK_BACKGROUND + "ADD A PAYMENT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.RED + "-------------------" + ColorCodes.RESET);
         System.out.println("Enter the date of the payment (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), dateFormatter);
         System.out.println("Enter the time of the payment (HH:mm:ss): ");
@@ -122,7 +137,7 @@ public class AccountingLedgerApp {
         System.out.println("Enter the name of the vendor: ");
         String vendor = scanner.nextLine();
         System.out.println("Enter the amount of the payment: ");
-        double amount = scanner.nextDouble();
+        double amount = scanner.nextDouble() * -1;
         scanner.nextLine();
 
         Transactions debit = new Transactions(date, time, description, vendor, amount);
@@ -131,16 +146,21 @@ public class AccountingLedgerApp {
         Collections.reverse(accountingLedger);
 
         FileWriter writer = new FileWriter("transactions.csv", true);
-        writer.write("\n" + debit.getDate().format(dateFormatter) + "|" + debit.getTime().format(timeFormatter) + "|" + debit.getDescription() + "|" + debit.getVendor() + "|-" + debit.getAmount());
+        writer.write("\n" + debit.getDate().format(dateFormatter) + "|" + debit.getTime().format(timeFormatter) + "|" + debit.getDescription() + "|" + debit.getVendor() + "|" + debit.getAmount());
         writer.close();
 
-        System.out.println("Your payment has been added.");
+        System.out.println();
+        System.out.println(ColorCodes.GREEN + "Your payment has been added." + " " + debit.getDate().format(dateFormatter) + "|" + debit.getTime().format(timeFormatter) + "|" + debit.getDescription() + "|" + debit.getVendor() + "|" + debit.getAmount() + ColorCodes.RESET);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
     }
 
-    public static void viewLedger() {
-
-        while (true) {
-
+    public static void viewLedger()
+    {
+        while (true)
+        {
+            System.out.println();
+            System.out.println(ColorCodes.CYAN + ColorCodes.BLACK_BACKGROUND + "LEDGER SCREEN" + ColorCodes.RESET);
+            System.out.println(ColorCodes.CYAN + "------------------" + ColorCodes.RESET);
             System.out.println(" A - Display All Entries");
             System.out.println(" D - Display All Deposits");
             System.out.println(" P - Display All Payments");
@@ -150,31 +170,48 @@ public class AccountingLedgerApp {
             char option = scanner.next().charAt(0);
             scanner.nextLine();
 
-            switch (option) {
+            switch (option)
+            {
                 case 'A':
                 case 'a':
-                    System.out.println("All Entries");
-                    System.out.println("Date|Time|Description|Vendor|Amount");
-                    System.out.println("--------------");
-                    for (Transactions transactions : accountingLedger) {
+                    System.out.println();
+                    System.out.println(ColorCodes.PURPLE + ColorCodes.BLACK_BACKGROUND + "All Entries" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "Date|Time|Description|Vendor|Amount" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "----------------------------------------" + ColorCodes.RESET);
+
+                    Collections.sort(accountingLedger, new Comparator<Transactions>()
+                    {
+                        public int compare(Transactions t1, Transactions t2) {
+                            return t2.getDate().compareTo(t1.getDate());
+                        }
+                    });
+
+                    for (Transactions transactions : accountingLedger)
+                    {
                         System.out.println(transactions.getDate().format(dateFormatter) + "|" + transactions.getTime().format(timeFormatter) + "|" + transactions.getDescription() + "|" + transactions.getVendor() + "|" + transactions.getAmount());
                         System.out.println();
                     }
                     break;
                 case 'D':
                 case 'd':
-                    System.out.println("All Deposits");
-                    System.out.println("---------------");
-                    for (Transactions transactions : accountingLedger) {
-                        if (transactions.getAmount() >= 0) {
+                    System.out.println();
+                    System.out.println(ColorCodes.PURPLE + ColorCodes.BLACK_BACKGROUND + "All Deposits" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "Date|Time|Description|Vendor|Amount" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "---------------" + ColorCodes.RESET);
+                    for (Transactions transactions : accountingLedger)
+                    {
+                        if (transactions.getAmount() >= 0)
+                        {
                             System.out.println(transactions.getDate().format(dateFormatter) + "|" + transactions.getTime().format(timeFormatter) + "|" + transactions.getDescription() + "|" + transactions.getVendor() + "|" + transactions.getAmount());
                         }
                     }
                     break;
                 case 'P':
                 case 'p':
-                    System.out.println("All Payments");
-                    System.out.println("---------------");
+                    System.out.println();
+                    System.out.println(ColorCodes.PURPLE + ColorCodes.BLACK_BACKGROUND + "All Payments" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "Date|Time|Description|Vendor|Amount" + ColorCodes.RESET);
+                    System.out.println(ColorCodes.PURPLE + "---------------" + ColorCodes.RESET);
                     for (Transactions transactions : accountingLedger) {
                         if (transactions.getAmount() < 0) {
                             System.out.println(transactions.getDate().format(dateFormatter) + "|" + transactions.getTime().format(timeFormatter) + "|" + transactions.getDescription() + "|" + transactions.getVendor() + "|" + transactions.getAmount());
@@ -187,16 +224,19 @@ public class AccountingLedgerApp {
                     break;
                 case 'H':
                 case 'h':
-                    displayHomeScreen();
-                    break;
+                    return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println(ColorCodes.RED + "Invalid option. Please try again." + ColorCodes.RESET);
+                    break;
             }
         }
     }
 
-    public static void viewReports() {
-
+    public static void viewReports()
+    {
+        System.out.println();
+        System.out.println(ColorCodes.CYAN + ColorCodes.BLACK_BACKGROUND + "REPORTS" + ColorCodes.RESET);
+        System.out.println(ColorCodes.CYAN + "------------------" + ColorCodes.RESET);
         System.out.println("Which report would you like?");
         System.out.println("1) Month To Date");
         System.out.println("2) Previous Month");
@@ -208,7 +248,8 @@ public class AccountingLedgerApp {
         int command = scanner.nextInt();
         scanner.nextLine();
 
-        switch (command) {
+        switch (command)
+        {
             case 1:
                 monthToDateReport();
                 break;
@@ -224,33 +265,36 @@ public class AccountingLedgerApp {
             case 5:
                 vendorReport();
             case 0:
-                displayHomeScreen();
-                break;
+                return;
             default:
-                System.out.println("Invalid option. Please try again.");
+                System.out.println(ColorCodes.RED + "Invalid option. Please try again." + ColorCodes.RESET);
                 break;
         }
 
     }
 
-    public static void monthToDateReport() {
-
-        System.out.println("Month To Date Report");
-        System.out.println("------------------------");
+    public static void monthToDateReport()
+    {
+        System.out.println();
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "MONTH TO DATE REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.WHITE + "------------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double monthToDateTotal = 0.0;
         Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentYear = calendar.get(Calendar.YEAR);
 
-        for (Transactions transactions : accountingLedger) {
+        for (Transactions transactions : accountingLedger)
+        {
             if (transactions.getDate().getYear() == currentYear
-                    && transactions.getDate().getMonthValue() == currentMonth) {
+                    && transactions.getDate().getMonthValue() == currentMonth)
+            {
                 String description = transactions.getDescription();
                 double amount = transactions.getAmount();
                 monthToDateTotal += amount;
 
-                if (ledger.containsKey(description)) {
+                if (ledger.containsKey(description))
+                {
                     double currentAmount = ledger.get(description);
                     ledger.put(description, currentAmount + amount);
                 } else {
@@ -259,32 +303,40 @@ public class AccountingLedgerApp {
             }
         }
 
-        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet())
+        {
             String description = entry.getKey();
             double amount = entry.getValue();
             System.out.printf("%-30s $%.2f%n", description, amount);
         }
+        System.out.println();
         System.out.printf("%-30s $%.2f%n", "Month To Date Total:", monthToDateTotal);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
+        viewReports();
     }
 
-    public static void previousMonthReport() {
-
-        System.out.println("Previous Month Report");
-        System.out.println("------------------------");
+    public static void previousMonthReport()
+    {
+        System.out.println();
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "PREVIOUS MONTH REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.WHITE + "------------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double monthToDateTotal = 0.0;
         Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
-        for (Transactions transactions : accountingLedger) {
+        for (Transactions transactions : accountingLedger)
+        {
             if (transactions.getDate().getYear() == currentYear
-                    && transactions.getDate().getMonthValue() == currentMonth) {
+                    && transactions.getDate().getMonthValue() == currentMonth)
+            {
                 String description = transactions.getDescription();
                 double amount = transactions.getAmount();
                 monthToDateTotal += amount;
 
-                if (ledger.containsKey(description)) {
+                if (ledger.containsKey(description))
+                {
                     double currentAmount = ledger.get(description);
                     ledger.put(description, currentAmount + amount);
                 } else {
@@ -293,49 +345,63 @@ public class AccountingLedgerApp {
             }
         }
 
-        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet())
+        {
             String description = entry.getKey();
             double amount = entry.getValue();
             System.out.printf("%-30s $%.2f%n", description, amount);
         }
+        System.out.println();
         System.out.printf("%-30s $%.2f%n", "Month To Date Total:", monthToDateTotal);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
+        viewReports();
     }
     public static void yearToDateReport()
     {
-        System.out.println("Year To Date Report");
-        System.out.println("-----------------------");
+        System.out.println();
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "YEAR TO DATE REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.WHITE + "-----------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double yearToDateTotal = 0.0;
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
 
-        for (Transactions transactions : accountingLedger) {
-            if (transactions.getDate().getYear() == currentYear) {
+        for (Transactions transactions : accountingLedger)
+        {
+            if (transactions.getDate().getYear() == currentYear)
+            {
                 String description = transactions.getDescription();
                 double amount = transactions.getAmount();
 
                 yearToDateTotal += amount;
 
-                if (ledger.containsKey(description)) {
+                if (ledger.containsKey(description))
+                {
                     double currentAmount = ledger.get(description);
                     ledger.put(description, currentAmount + amount);
-                } else {
+                } else
+                {
                     ledger.put(description, amount);
                 }
             }
         }
-        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet())
+        {
             String description = entry.getKey();
             double amount = entry.getValue();
             System.out.printf("%-35s $%.2f%n", description, amount);
         }
+        System.out.println();
         System.out.printf("%-35s $%.2f%n", "Year To Date Total:", yearToDateTotal);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
+        viewReports();
     }
 
-    public static void previousYearReport() {
-
-        System.out.println("Previous Year Report");
-        System.out.println("-----------------------");
+    public static void previousYearReport()
+    {
+        System.out.println();
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "PREVIOUS YEAR REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.WHITE + "-----------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double yearToDateTotal = 0.0;
         Calendar calendar = Calendar.getInstance();
@@ -356,21 +422,32 @@ public class AccountingLedgerApp {
                 }
             }
         }
-        for (HashMap.Entry<String, Double> entry : ledger.entrySet()) {
+        for (HashMap.Entry<String, Double> entry : ledger.entrySet())
+        {
             String description = entry.getKey();
             double amount = entry.getValue();
             System.out.printf("%-35s $%.2f%n", description, amount);
         }
+        System.out.println();
         System.out.printf("%-35s $%.2f%n", "Year To Date Total:", yearToDateTotal);
+        System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
+        viewReports();
     }
-    public static void vendorReport() {
-        System.out.println("Enter the vendor name:");
+    public static void vendorReport()
+    {
+        System.out.print("Enter the vendor name: ");
         String vendorName = scanner.nextLine().toLowerCase();
         System.out.println("Entries for vendor " + vendorName + ":");
-        for (Transactions transaction : accountingLedger) {
-            if (transaction.getVendor().toLowerCase().equals(vendorName)) {
+        System.out.println();
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "VENDOR REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.WHITE + "-----------------------" + ColorCodes.RESET);
+
+        for (Transactions transaction : accountingLedger)
+        {
+            if (transaction.getVendor().toLowerCase().equals(vendorName))
+            {
                 System.out.println(transaction.getDescription() + "|" + transaction.getVendor() + "|" + transaction.getAmount());
             }
-        }
+        }System.out.println(ColorCodes.CYAN + "\f" + ColorCodes.RESET);
     }
 }
