@@ -238,9 +238,9 @@ public class AccountingLedgerApp {
         System.out.println(ColorCodes.CYAN + ColorCodes.BLACK_BACKGROUND + "REPORTS" + ColorCodes.RESET);
         System.out.println(ColorCodes.CYAN + "------------------" + ColorCodes.RESET);
         System.out.println("Which report would you like?");
-        System.out.println("1) Month To Date");
+        System.out.println("1) Month-To-Date");
         System.out.println("2) Previous Month");
-        System.out.println("3) Year To Date");
+        System.out.println("3) Year-To-Date");
         System.out.println("4) Previous Year");
         System.out.println("5) Search by Vendor");
         System.out.println("0) Back");
@@ -276,7 +276,7 @@ public class AccountingLedgerApp {
     public static void monthToDateReport()
     {
         System.out.println();
-        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "MONTH TO DATE REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "MONTH-TO-DATE REPORT" + ColorCodes.RESET);
         System.out.println(ColorCodes.WHITE + "------------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double monthToDateTotal = 0.0;
@@ -359,7 +359,7 @@ public class AccountingLedgerApp {
     public static void yearToDateReport()
     {
         System.out.println();
-        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "YEAR TO DATE REPORT" + ColorCodes.RESET);
+        System.out.println(ColorCodes.BLACK + ColorCodes.WHITE_BACKGROUND + "YEAR-TO-DATE REPORT" + ColorCodes.RESET);
         System.out.println(ColorCodes.WHITE + "-----------------------" + ColorCodes.RESET);
         HashMap<String, Double> ledger = new HashMap<>();
         double yearToDateTotal = 0.0;
